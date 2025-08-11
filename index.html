@@ -1,77 +1,105 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asian Connect</title>
+    <title>아시안 커넥트 - LIVE 스포츠 중계 및 배팅</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/favicon.ico" />
 </head>
 <body>
-    <header>
-        <h1>아시안 커넥트</h1>
-        <p>LIVE 스포츠 중계를 무료로 시청하고, 최고의 스포츠 배팅 경험을 즐기세요!</p>
-        <div>
-            <a href="https://ac365pub.com/">지금 바로 시작하기</a>
-            <a href="#">자세히 알아보기</a>
-        </div>
-    </header>
-    <section>
-        <h2>제공 서비스</h2>
-        <div>
-            <h3>스포츠 배팅</h3>
-            <p>다양한 스포츠 경기에 배팅하고 승리의 스릴을 느껴보세요.</p>
-        </div>
-        <div>
-            <h3>슬롯 게임</h3>
-            <p>흥미진진한 슬롯 게임으로 큰 상금을 노려보세요.</p>
-        </div>
-        <div>
-            <h3>카지노 게임</h3>
-            <p>실시간 카지노 게임에서 딜러와 함께 즐겨보세요.</p>
-        </div>
-    </section>
-    <footer>
-        <p>© 2025 Asian Connect. All rights reserved.</p>
-        <a href="#">이용약관</a>
-        <a href="#">개인정보처리방침</a>
-    </footer>
+    <div class="flex-container">
+        <header class="header">
+            <a href="#" class="header-logo-link">
+                <img
+                    src="/images/headerlogo.png"
+                    alt="Asian Connect Logo"
+                    width="200"
+                    height="50"
+                    class="header-logo-img"
+                />
+                <span class="sr-only">Asian Connect</span>
+            </a>
+        </header>
+        <main class="main-content">
+            <section class="hero-section">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1 class="hero-title">
+                            아시안 커넥트
+                        </h1>
+                        <p class="hero-description">
+                            LIVE 스포츠 중계를 무료로 시청하고, 최고의 스포츠 배팅 경험을 즐기세요!
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="https://ac365pub.com/" class="button primary-button">
+                                지금 바로 시작하기
+                            </a>
+                            <a href="https://ac365pub.com/" class="button outline-button">
+                                자세히 알아보기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="services-section">
+                <div class="container">
+                    <div class="services-header">
+                        <h2 class="services-title">
+                            제공 서비스
+                        </h2>
+                    </div>
+                    <div class="services-grid">
+                        <div class="service-card">
+                            <img
+                                src="/images/sportsgt-title.png"
+                                alt="Sports Betting"
+                                width="300"
+                                height="150"
+                                class="service-image"
+                            />
+                            <h3 class="service-card-title">스포츠 배팅</h3>
+                            <p class="service-card-description">다양한 스포츠 경기에 배팅하고 승리의 스릴을 느껴보세요.</p>
+                        </div>
+                        <div class="service-card">
+                            <img
+                                src="/images/slot-title.png"
+                                alt="Slot Games"
+                                width="300"
+                                height="150"
+                                class="service-image"
+                            />
+                            <h3 class="service-card-title">슬롯 게임</h3>
+                            <p class="service-card-description">흥미진진한 슬롯 게임으로 큰 상금을 노려보세요.</p>
+                        </div>
+                        <div class="service-card">
+                            <img
+                                src="/images/csngt-title.png"
+                                alt="Casino Games"
+                                width="300"
+                                height="150"
+                                class="service-image"
+                            />
+                            <h3 class="service-card-title">카지노 게임</h3>
+                            <p class="service-card-description">실시간 카지노 게임에서 딜러와 함께 즐겨보세요.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="footer">
+            <p class="footer-copyright">&copy; 2025 Asian Connect. All rights reserved.</p>
+            <nav class="footer-nav">
+                <a href="#" class="footer-link">
+                    이용약관
+                </a>
+                <a href="#" class="footer-link">
+                    개인정보처리방침
+                </a>
+            </nav>
+        </footer>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
